@@ -1,0 +1,31 @@
+1. Enable 'NET' in Firebug, and load the page.
+It will display the headers, in which we can see if varnish is loading the page.
+
+2. You can set varnishlog to log all your 503 errors by issuing the following command:
+
+$ varnishlog -q 'RespStatus == 503' -g request
+OR
+
+varnishlog -a -w /var/log/varnish/varnish50x.log -q "RespStatus >= 500 or BerespStatus >= 500"
+
+3.  varnish 503 can be fixed by steps below:
+
+   Step 1 - Increase the connect_timeout,.first_byte_timeout and .between_bytes_timeout in you backend setting in default.vcl:
+
+    backend default {
+      .host = "www.xxx.com";
+      .connect_timeout = 5s;
+      .first_byte_timeout = 10s;
+      .between_bytes_timeout = 10s;
+    }
+
+    Step 2 - Increase the parameter to 8192 when start varnish.
+
+    varnishd [options] http_resp_hdr_len=8192
+
+    Step 3 - Checkout you network or backend server.
+
+    If Step 1 and Step 2 can not help you, please check you network connection and banckend server's availability.
+
+
+

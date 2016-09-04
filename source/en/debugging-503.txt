@@ -1,5 +1,5 @@
 Updated again. Hello there.
-
+Again.
 1. Enable 'NET' in Firebug, and load the page.
 It will display the headers, in which we can see if varnish is loading the page.
 
